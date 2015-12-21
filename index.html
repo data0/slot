@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Illustrating Unfair Slot Machine</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Illustrating Unfair Slot Machine">
+  <meta name="author" content="Serge">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Illustrating Unfair Slot Machine</h1>
+    <h2>Developing Data Products Course Project</h2>
+    <p>Serge<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Some time ago I was inspired by Penney&#39;s game, which has been described in 1969 by Walter Penney. 
+There is a good article dedicated to this game in Wikipedia: <a href="https://en.wikipedia.org/wiki/Penney&#x27;s_game">https://en.wikipedia.org/wiki/Penney&#39;s_game</a>.  </p>
+
+<p>Game&#39;s rule is simple. Two players have to predict three coin tosses. Player A goes first and tells his prediction. Player B has a freedom to select any other combination, except the one predicted by player A. For example, player A has selected &quot;tails-tails-tails&quot; and player B - &quot;heads-heads-heads&quot;. Then one coin is flipped repeatedly, resulting in a sequence like: &quot;heads-tails-heads-heads-tails-tails-tails...&quot; The prediction appears first in a run of coin tosses wins.  </p>
+
+<p>The &quot;magic&quot; here is that player B has better chances to win by choosing sequences according to the matrix on the next page.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>About the Unfair Slot Machine</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>I had an idea to build a kind of web-based slot machine with 9 graphical reels and 33 symbols on each reel, but due to the Christmas rush I was able to manage just two symbols 3 reels machine. It&#39;s available at: <a href="https://data0.shinyapps.io/datasci">https://data0.shinyapps.io/datasci</a>. Please be charitable. I know, it looks ugly, there are known and unknown bugs, but I was not able to fix everything and implement planned features due to lack of time.
+Any suggestions and constructive criticism would be welcome.  </p>
+
+<h5>Optimal player B&#39;s strategy</h5>
+
+<!-- html table generated in R 3.2.2 by xtable 1.8-0 package -->
+
+<!-- Mon Dec 21 12:40:44 2015 -->
+
+<table border=1>
+<tr> <th>  </th> <th> Player A </th> <th> Player B </th>  </tr>
+  <tr> <td align="right"> 1 </td> <td> Heads-Heads-Heads </td> <td> Tails-Heads-Heads </td> </tr>
+  <tr> <td align="right"> 2 </td> <td> Heads-Heads-Tails </td> <td> Tails-Heads-Heads </td> </tr>
+  <tr> <td align="right"> 3 </td> <td> Heads-Tails-Heads </td> <td> Heads-Heads-Tails </td> </tr>
+  <tr> <td align="right"> 4 </td> <td> Heads-Tails-Tails </td> <td> Heads-Heads-Tails </td> </tr>
+  <tr> <td align="right"> 5 </td> <td> Tails-Heads-Heads </td> <td> Tails-Tails-Heads </td> </tr>
+  <tr> <td align="right"> 6 </td> <td> Tails-Heads-Tails </td> <td> Tails-Tails-Heads </td> </tr>
+  <tr> <td align="right"> 7 </td> <td> Tails-Tails-Heads </td> <td> Heads-Tails-Tails </td> </tr>
+  <tr> <td align="right"> 8 </td> <td> Tails-Tails-Tails </td> <td> Heads-Tails-Tails </td> </tr>
+   </table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ui.R Variables</h2>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Variable name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>input$goButton</td>
+<td>Input value of the Go button</td>
+</tr>
+<tr>
+<td>slot_1</td>
+<td>Reel 1 value (input variable)</td>
+</tr>
+<tr>
+<td>slot_2</td>
+<td>Reel 2 value (input variable)</td>
+</tr>
+<tr>
+<td>slot_3</td>
+<td>Reel 3 value (input variable)</td>
+</tr>
+<tr>
+<td>output_player_name</td>
+<td>Rendered human player&#39;s name</td>
+</tr>
+<tr>
+<td>round</td>
+<td>Rendered game counter</td>
+</tr>
+<tr>
+<td>your_choice</td>
+<td>Render human player&#39;s choise</td>
+</tr>
+<tr>
+<td>data_sci_choice</td>
+<td>Render Data Scientist&#39;s choice</td>
+</tr>
+<tr>
+<td>randomSeq</td>
+<td>Rendered 37 random binomials</td>
+</tr>
+<tr>
+<td>referee</td>
+<td>Rendered winner of the current round</td>
+</tr>
+<tr>
+<td>score</td>
+<td>Rendered score plot</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Bugs and Features</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>This application has only one shinyapps instance with instance idle timeout 30 min. This means that your score may summarize with results of another human player disregard of the entered player name.</li>
+<li>Reloading your webpage will reset the Round&#39;s value, but not the Score. The Score will be reset by reaching the idle time out.</li>
+<li>The red line in the score plot shows the expected draw level for a simple fair coin game.<br></li>
+</ol>
+
+<h3><span style="color:green; font-weight:bold">    *** I wish you a Merry Christmas and a Happy New Year! ***</span></h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='About the Unfair Slot Machine'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='ui.R Variables'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Bugs and Features'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

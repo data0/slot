@@ -1,0 +1,109 @@
+---
+title       : Illustrating Unfair Slot Machine
+subtitle    : Developing Data Products Course Project
+author      : Serge
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Introduction  
+  
+Some time ago I was inspired by Penney's game, which has been described in 1969 by Walter Penney. 
+There is a good article dedicated to this game in Wikipedia: https://en.wikipedia.org/wiki/Penney's_game.  
+  
+Game's rule is simple. Two players have to predict three coin tosses. Player A goes first and tells his prediction. Player B has a freedom to select any other combination, except the one predicted by player A. For example, player A has selected "tails-tails-tails" and player B - "heads-heads-heads". Then one coin is flipped repeatedly, resulting in a sequence like: "heads-tails-heads-heads-tails-tails-tails..." The prediction appears first in a run of coin tosses wins.  
+  
+The "magic" here is that player B has better chances to win by choosing sequences according to the matrix on the next page.
+
+
+--- .class #id 
+
+## About the Unfair Slot Machine
+
+I had an idea to build a kind of web-based slot machine with 9 graphical reels and 33 symbols on each reel, but due to the Christmas rush I was able to manage just two symbols 3 reels machine. It's available at: https://data0.shinyapps.io/datasci. Please be charitable. I know, it looks ugly, there are known and unknown bugs, but I was not able to fix everything and implement planned features due to lack of time.
+Any suggestions and constructive criticism would be welcome.  
+
+
+##### Optimal player B's strategy
+```{r xtable, results="asis", echo=FALSE, warning=FALSE, message=FALSE}
+
+conversion = function(seqPlayerA){
+    splitSeqPlayerA=unlist(strsplit(seqPlayerA, split="-"))
+    paste(ifelse(splitSeqPlayerA[2] == "Heads", "Tails", "Heads"), splitSeqPlayerA[1], splitSeqPlayerA[2], sep="-")
+}
+
+
+slotA1="Heads-Heads-Heads"
+slotA2="Heads-Heads-Tails"
+slotA3="Heads-Tails-Heads"
+slotA4="Heads-Tails-Tails"
+slotA5="Tails-Heads-Heads"
+slotA6="Tails-Heads-Tails"
+slotA7="Tails-Tails-Heads"
+slotA8="Tails-Tails-Tails"
+
+slotB1=conversion(slotA1)
+slotB2=conversion(slotA2)
+slotB3=conversion(slotA3)
+slotB4=conversion(slotA4)
+slotB5=conversion(slotA5)
+slotB6=conversion(slotA6)
+slotB7=conversion(slotA7)
+slotB8=conversion(slotA8)
+
+playerA=c(slotA1,slotA2,slotA3,slotA4,slotA5,slotA6,slotA7,slotA8)
+playerB=c(slotB1,slotB2,slotB3,slotB4,slotB5,slotB6,slotB7,slotB8)
+winningTable=matrix(c(playerA, playerB), nrow=8, ncol=2)
+colnames(winningTable)=c("Player A","Player B")
+
+library(xtable)
+tab <- xtable(winningTable)
+print(tab, type="html")
+
+
+```
+
+
+--- .class #id 
+
+## ui.R Variables  
+
+
+|Variable name|Description   |
+|---|---|
+|input$goButton|Input value of the Go button|
+|slot_1|Reel 1 value (input variable)|
+|slot_2|Reel 2 value (input variable)|
+|slot_3|Reel 3 value (input variable)|
+|output_player_name|Rendered human player's name|
+|round|Rendered game counter|
+|your_choice|Render human player's choise|
+|data_sci_choice|Render Data Scientist's choice|
+|randomSeq|Rendered 37 random binomials|
+|referee|Rendered winner of the current round|
+|score|Rendered score plot|
+
+
+--- .class #id 
+
+## Bugs and Features  
+  
+1. This application has only one shinyapps instance with instance idle timeout 30 min. This means that your score may summarize with results of another human player disregard of the entered player name.
+2. Reloading your webpage will reset the Round's value, but not the Score. The Score will be reset by reaching the idle time out.
+3. The red line in the score plot shows the expected draw level for a simple fair coin game.  
+  
+  
+  
+### <span style="color:green; font-weight:bold">    *** I wish you a Merry Christmas and a Happy New Year! ***</span>
+
+  
+
+
+
+
+
